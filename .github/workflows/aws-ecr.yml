@@ -23,17 +23,18 @@ jobs:
         name: Login to AWS ECR Repo
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
-      # -
-      #   name: Get timestamp
-      #   id: get-timestamp
-      #   run: echo "::set-output name=timestamp::$(date +'%Y-%m-%d-%H-%M')"
+      -
+        name: Get timestamp
+        id: get-timestamp
+        #run: echo "::set-output name=timestamp::$(date +'%Y-%m-%d-%H-%M')"
+        run: echo "timestamp=$(date +'%Y-%m-%d-%H-%M')" >> $GITHUB_OUTPUT
       -
         name: Build and push
         id: build-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: ${{ vars.ECR_REPO_NAME }}
-          IMAGE_TAG: ${{ env.TIME }}
+          IMAGE_TAG: ${{ vars.GITHUB_OUTPUT }}
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG

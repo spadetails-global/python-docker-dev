@@ -1,6 +1,6 @@
 services:
   server:
-    platform: linux/amd64
+    # platform: linux/amd64
     build:
       context: .
     ports:
@@ -20,7 +20,7 @@ services:
         - action: rebuild
           path: .
   db:
-    platform: linux/amd64
+    # platform: linux/amd64
     image: postgres
     restart: always
     user: postgres

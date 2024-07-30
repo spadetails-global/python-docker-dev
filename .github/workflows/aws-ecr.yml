@@ -1,4 +1,4 @@
-name: ci
+name: CI deploy-to-aws-ecr
 
 on:
   push:
@@ -11,10 +11,10 @@ jobs:
     steps:
       -
         name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       -
         name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -23,17 +23,17 @@ jobs:
         name: Login to AWS ECR Repo
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
-      -
-        name: Get timestamp
-        id: get-timestamp
-        run: echo "::set-output name=timestamp::$(date +'%Y-%m-%d-%H-%M')"
+      # -
+      #   name: Get timestamp
+      #   id: get-timestamp
+      #   run: echo "::set-output name=timestamp::$(date +'%Y-%m-%d-%H-%M')"
       -
         name: Build and push
         id: build-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: ${{ vars.ECR_REPO_NAME }}
-          IMAGE_TAG: ${{ steps.get-timestamp.outputs.timestamp }}
+          IMAGE_TAG: ${{ env.TIME }}
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG

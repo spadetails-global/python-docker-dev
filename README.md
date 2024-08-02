@@ -1,2 +1,2 @@
-## Simple python docker dev example for the official docker docs
-https://docs.docker.com/language/python/develop/
+## Simple python docker dev instance
+* Build and deploy a docker image to aws-ecr registry

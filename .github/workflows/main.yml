@@ -1,4 +1,4 @@
-name: ci
+name: CI deploy to docker-hub
 
 on:
   push:
